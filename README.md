@@ -59,7 +59,6 @@ It's simple PHP CLI development tool
 		}
 		
 		public function Run() {
-			// Clean static pages
 			$clean = new example_help();
 			$clean->Run();
 		}
@@ -69,7 +68,7 @@ It's simple PHP CLI development tool
 
 	<?php
 
-	class example extends NanoCLI {
+	class example_test extends NanoCLI {
 		public function __construct() {
 			parent::__construct();
 		}
