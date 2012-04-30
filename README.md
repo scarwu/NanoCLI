@@ -88,11 +88,8 @@ It's simple PHP CLI development tool
 	
 ### How It Work
 
-In Boot.php, it's define some default setting add call the main function run.
-The main is extends NanoCLI and can it use Text RW Standard I/O.
-All of Command use autoload function include into NanoCLI.
+In Boot.php, it's define some default setting add call the main function run. The main is extends NanoCLI and can it use Text RW Standard I/O. All of Command use autoload function include into NanoCLI.
 
 #### Class NanoCLI Behavior
 
-NanoCLI will execute `$this->Init()` first and Init() will check command,
-if `$_SERVER['argv']` count > 0 it will call next class' Init() and shift `$_SERVER['argv']` else it will execute `$this->Run()`.
+NanoCLI will execute `$this->Init()` first and Init() will check command, if `$_SERVER['argv']` count > 0 it will call next class' Init() and shift `$_SERVER['argv']` else it will execute `$this->Run()`.
