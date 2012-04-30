@@ -6,12 +6,18 @@
  * @author		ScarWu
  * @copyright	Copyright (c) 2012, ScarWu (http://scar.simcz.tw/)
  * @link		http://github.com/scarwu/NanoCLI
- * @since		Version 1.0
- * @filesource
  */
 
 abstract class NanoCLI {
+	
+	/**
+	 * @var string
+	 */
 	static public $_argv;
+	
+	/**
+	 * @var string
+	 */
 	static public $_prefix;
 	
 	public function __construct() {
@@ -21,6 +27,9 @@ abstract class NanoCLI {
 		}
 	}
 	
+	/**
+	 * Init
+	 */
 	public function Init() {
 		if(count(NanoCLI::$_argv) > 0) {
 			$command = array_shift(NanoCLI::$_argv);
@@ -38,5 +47,8 @@ abstract class NanoCLI {
 			$this->Run();
 	}
 	
+	/**
+	 * Execute default function
+	 */
 	public function Run() {}
 }

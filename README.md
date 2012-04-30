@@ -12,7 +12,6 @@ It's simple PHP CLI development tool
 ### Requirement
 
 * PHP 5.3+
-* PHP-CLI
 
 ### Create Example Files
 

@@ -7,8 +7,6 @@
  * @author		ScarWu
  * @copyright	Copyright (c) 2012, ScarWu (http://scar.simcz.tw/)
  * @link		http://github.com/scarwu/NanoCLI
- * @since		Version 1.0
- * @filesource
  */
 
 require_once '../src/NanoCLI.php';
