@@ -14,7 +14,7 @@ class example_help extends NanoCLI {
 	}
 	
 	public function Run() {
-		Text::Write("NanoCLI Help\n", 'red');
-		Text::Write("ex. example.php test\n");
+		NanoIO::Write("NanoCLI Help\n", 'red');
+		NanoIO::Write("ex. example.php test\n");
 	}
 }

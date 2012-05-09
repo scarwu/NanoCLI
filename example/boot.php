@@ -9,18 +9,19 @@
  * @link		http://github.com/scarwu/NanoCLI
  */
 
+require_once '../src/NanoLoader.php';
+require_once '../src/NanoIO.php';
 require_once '../src/NanoCLI.php';
-require_once '../src/Text.php';
-require_once '../src/Autoload.php';
 
 // Default Setting
-define('NANOCLI_COMMAND', __DIR__ . DIRECTORY_SEPARATOR . 'command');
+define('NANOCLI_COMMAND', __DIR__ . DIRECTORY_SEPARATOR . 'command' . DIRECTORY_SEPARATOR);
 define('NANOCLI_PREFIX', 'example');
 
-spl_autoload_register('NanoCLI_Autoload');
+// Register NanoCLI Autoloader
+NanoLoader::Register();
 
 // Load First Command and Init
-require_once NANOCLI_COMMAND . DIRECTORY_SEPARATOR . 'example.php';
+require_once NANOCLI_COMMAND . 'example.php';
 
 $NanoCLI = new example();
 $NanoCLI->Init();

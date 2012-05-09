@@ -14,10 +14,10 @@ class example_test extends NanoCLI {
 	}
 	
 	public function Run() {
-		Text::Write("Please Enter Your Name: ", 'yellow');
+		NanoIO::Write("Please Enter Your Name: ", 'yellow');
 		
-		$name = Text::Read();
+		$name = NanoIO::Read();
 		
-		Text::Write("Hi, $name\n");
+		NanoIO::Write("Hi, $name\n");
 	}
 }
