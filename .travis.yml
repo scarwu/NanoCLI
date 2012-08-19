@@ -1,5 +1,0 @@
-script: php ./example/boot.php help
-language: php
-php:
-  - 5.3
-  - 5.4

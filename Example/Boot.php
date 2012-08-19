@@ -9,12 +9,12 @@
  * @link		http://github.com/scarwu/NanoCLI
  */
 
-require_once realpath(__DIR__ . '/../src/NanoLoader.php');
-require_once realpath(__DIR__ . '/../src/NanoIO.php');
-require_once realpath(__DIR__ . '/../src/NanoCLI.php');
+require_once realpath(__DIR__ . '/../NanoLoader.php');
+require_once realpath(__DIR__ . '/../NanoIO.php');
+require_once realpath(__DIR__ . '/../NanoCLI.php');
 
 // Default Setting
-define('NANOCLI_COMMAND', realpath(__DIR__ . '/command') . '/');
+define('NANOCLI_COMMAND', realpath(__DIR__ . '/Command') . '/');
 define('NANOCLI_PREFIX', 'example');
 
 // Register NanoCLI Autoloader
