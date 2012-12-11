@@ -27,8 +27,8 @@ class NanoIO {
 	 * @param string
 	 * @param string
 	 */
-	public static function Writeln($msg, $color = NULL) {
-		self::Write($msg."\n", $color);
+	public static function writeln($msg, $color = NULL) {
+		self::write($msg . "\n", $color);
 	}
 	
 	/**
@@ -37,7 +37,7 @@ class NanoIO {
 	 * @param string
 	 * @param string
 	 */
-	public static function Write($msg, $color = NULL) {
+	public static function write($msg, $color = NULL) {
 		if(NULL !== $color && isset(self::$_color[$color]))
 			$msg = sprintf("\033[%sm%s\033[m", self::$_color[$color], $msg);
 		
@@ -47,7 +47,7 @@ class NanoIO {
 	/**
 	 * Read STDIN
 	 */
-	public static function Read() {
+	public static function read() {
 		return trim(fgets(STDIN));
 	}
 }

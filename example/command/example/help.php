@@ -13,8 +13,8 @@ class example_help extends NanoCLI {
 		parent::__construct();
 	}
 	
-	public function Run() {
-		NanoIO::Write("NanoCLI Help\n", 'red');
-		NanoIO::Write("ex. example.php test\n");
+	public function run() {
+		NanoIO::write("NanoCLI Help\n", 'red');
+		NanoIO::write("ex. example.php test\n");
 	}
 }

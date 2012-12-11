@@ -14,14 +14,11 @@ require_once realpath(__DIR__ . '/../NanoIO.php');
 require_once realpath(__DIR__ . '/../NanoCLI.php');
 
 // Default Setting
-define('NANOCLI_COMMAND', realpath(__DIR__ . '/Command') . '/');
+define('NANOCLI_COMMAND', realpath(__DIR__ . '/command') . '/');
 define('NANOCLI_PREFIX', 'example');
 
 // Register NanoCLI Autoloader
-NanoLoader::Register();
-
-// Load First Command and Init
-require_once NANOCLI_COMMAND . 'example.php';
+NanoLoader::register();
 
 $NanoCLI = new example();
 $NanoCLI->Init();

@@ -16,10 +16,10 @@ class NanoLoader {
 	 * 
 	 * @param string
 	 */
-	private static function Load($class_name) {
+	private static function load($class_name) {
 		$class_name = str_replace(array('_', '.'), array('/', ''), $class_name);
 		if(file_exists(NANOCLI_COMMAND . DIRECTORY_SEPARATOR . "$class_name.php"))
-			require_once NANOCLI_COMMAND . DIRECTORY_SEPARATOR . "$class_name.php";
+			require NANOCLI_COMMAND . DIRECTORY_SEPARATOR . "$class_name.php";
 		else 
 			throw new Exception("Command is not found.");
 	}
@@ -27,7 +27,7 @@ class NanoLoader {
 	/**
 	 * Register
 	 */
-	public static function Register() {
-		spl_autoload_register('self::Load');
+	public static function register() {
+		spl_autoload_register('self::load');
 	}
 }

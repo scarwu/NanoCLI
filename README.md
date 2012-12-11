@@ -18,33 +18,33 @@ It's simple PHP CLI development tool
 #### Simple File Structure Planning
 
 	NanoCLI
-	├── Command
+	├── command
 	│   ├── example
 	│   │   ├── help.php
 	│   │   └── test.php
 	│   └── example.php
-	├── Core
-	│   ├── Autoload.php
+	├── core
+	│   ├── NanoIO.php
 	│   ├── NanoCLI.php
-	│   └── Text.php
-	└── Boot.php
+	│   └── NanoLoader.php
+	└── boot.php
 
 #### Create Boot.php and Add Several Code
 
 	#!/usr/bin/php
 	<?php
 	
-	require_once 'Core/NanoCLI.php';
-	require_once 'Core/Text.php';
-	require_once 'Core/Autoload.php';
-	
-	define('NANOCLI_COMMAND', __DIR__ . DIRECTORY_SEPARATOR . 'Command');
+	require_once realpath(__DIR__ . '/../NanoLoader.php');
+	require_once realpath(__DIR__ . '/../NanoIO.php');
+	require_once realpath(__DIR__ . '/../NanoCLI.php');
+
+	// Default Setting
+	define('NANOCLI_COMMAND', realpath(__DIR__ . '/command') . '/');
 	define('NANOCLI_PREFIX', 'example');
-	
-	spl_autoload_register('NanoCLI_Autoload');
-	
-	require_once NANOCLI_COMMAND . DIRECTORY_SEPARATOR . 'example.php';
-	
+
+	// Register NanoCLI Autoloader
+	NanoLoader::register();
+
 	$NanoCLI = new example();
 	$NanoCLI->Init();
 
@@ -57,9 +57,9 @@ It's simple PHP CLI development tool
 			parent::__construct();
 		}
 		
-		public function Run() {
-			$clean = new example_help();
-			$clean->Run();
+		public function run() {
+			$help = new example_help();
+			$help->run();
 		}
 	}
 	
@@ -72,18 +72,18 @@ It's simple PHP CLI development tool
 			parent::__construct();
 		}
 		
-		public function Run() {
-			Text::Write("Please Enter Your Name: ", 'yellow');
+		public function run() {
+			NanoIO::write("Please Enter Your Name: ", 'yellow');
 		
-			$name = Text::Read();
+			$name = NanoIO::read();
 			
-			Text::Write("Hi, $name.\n");
+			NanoIO::writeln("Hi, $name");
 		}
 	}
 	
 #### Call CLI Command
 
-	php Boot.php test
+	php boot.php test
 	
 ### How It Work
 
@@ -91,4 +91,4 @@ In Boot.php, it's define some default setting add call the main function run. Th
 
 #### Class NanoCLI Behavior
 
-NanoCLI will execute `$this->Init()` first and Init() will check command, if `$_SERVER['argv']` count > 0 it will call next class' Init() and shift `$_SERVER['argv']` else it will execute `$this->Run()`.
+NanoCLI will execute `$this->init()` first and Init() will check command, if `$_SERVER['argv']` count > 0 it will call next class' init() and shift `$_SERVER['argv']` else it will execute `$this->run()`.

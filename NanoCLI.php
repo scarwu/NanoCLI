@@ -28,27 +28,27 @@ abstract class NanoCLI {
 	}
 	
 	/**
-	 * Init
+	 * Initialize
 	 */
-	final public function Init() {
+	final public function init() {
 		if(count(self::$_argv) > 0) {
 			$command = array_shift(self::$_argv);
 			self::$_prefix .= '_' . $command;
 			$class = self::$_prefix;
 			try {
 				$class = new $class();
-				$class->Init();
+				$class->init();
 			}
 			catch(Exception $e) {
-				NanoIO::Write("Command \"$command\" is not found.\n", 'red');
+				NanoIO::write("Command \"$command\" is not found.\n", 'red');
 			}
 		}
 		else
-			$this->Run();
+			$this->run();
 	}
 	
 	/**
 	 * Execute default function
 	 */
-	public function Run() {}
+	public function run() {}
 }
