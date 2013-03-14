@@ -4,7 +4,7 @@
  * 
  * @package		NanoCLI
  * @author		ScarWu
- * @copyright	Copyright (c) 2012, ScarWu (http://scar.simcz.tw/)
+ * @copyright	Copyright (c) 2012-2013, ScarWu (http://scar.simcz.tw/)
  * @link		http://github.com/scarwu/NanoCLI
  */
 
@@ -13,17 +13,17 @@ abstract class NanoCLI {
 	/**
 	 * @var array
 	 */
-	static protected $_command = array();
+	static protected $_commands = array();
 
 	/**
 	 * @var array
 	 */
-	static protected $_option = array();
+	static protected $_options = array();
 
 	/**
 	 * @var array
 	 */
-	static protected $_setting = array();
+	static protected $_settings = array();
 	
 	/**
 	 * @var string
@@ -36,13 +36,13 @@ abstract class NanoCLI {
 
 			while ($value = array_shift($argv)) {
 				if (preg_match("/^(-{2}\w+)=(.+)/", $value, $match))
-					self::$_setting[$match[1]] = $match[2];
+					self::$_settings[$match[1]] = $match[2];
 
 				if (preg_match("/^-{1}\w+/", $value))
-					self::$_option[] = $value;
+					self::$_options[] = $value;
 
 				if (preg_match("/^\w+/", $value))
-					self::$_command[] = $value;
+					self::$_commands[] = $value;
 			}
 
 			self::$_prefix = NANOCLI_PREFIX;
@@ -53,8 +53,8 @@ abstract class NanoCLI {
 	 * Initialize
 	 */
 	final public function init() {
-		if(count(self::$_command) > 0) {
-			$command = array_shift(self::$_command);
+		if(count(self::$_commands) > 0) {
+			$command = array_shift(self::$_commands);
 			self::$_prefix .= '_' . $command;
 			$class = self::$_prefix;
 			try {
@@ -62,7 +62,7 @@ abstract class NanoCLI {
 				$class->init();
 			}
 			catch(Exception $e) {
-				NanoIO::write("Command \"$command\" is not found.\n", 'red');
+				NanoIO::writeln("Command $command is not found.", 'red');
 			}
 		}
 		else
