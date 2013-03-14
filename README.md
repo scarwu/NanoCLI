@@ -1,13 +1,11 @@
 Nano CLI
 ========
 
-### Description
+A Simply PHP CLI Development Tools
 
-It's simple PHP CLI development tool
+[![Build Status](https://travis-ci.org/scarwu/NanoCLI.png?branch=master)](https://travis-ci.org/scarwu/NanoCLI)
 
-* All of Commands Must extends NanoCLI
-* NanoCLI Supported Linux Terminal Color
-* NanoCLI Use SPL Autoload **BUT** It's Not Use Namespace
+## Getting Started
 
 ### Requirement
 
