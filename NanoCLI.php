@@ -11,18 +11,40 @@
 abstract class NanoCLI {
 	
 	/**
-	 * @var string
+	 * @var array
 	 */
-	static public $_argv;
+	static protected $_command = array();
+
+	/**
+	 * @var array
+	 */
+	static protected $_option = array();
+
+	/**
+	 * @var array
+	 */
+	static protected $_setting = array();
 	
 	/**
 	 * @var string
 	 */
-	static public $_prefix;
+	static protected $_prefix = NULL;
 	
 	public function __construct() {
-		if(!is_array(self::$_argv)) {
-			self::$_argv = array_slice($_SERVER['argv'], 1);
+		if(NULL == self::$_prefix) {
+			$argv = array_slice($_SERVER['argv'], 1);
+
+			while ($value = array_shift($argv)) {
+				if (preg_match("/^(-{2}\w+)=(.+)/", $value, $match))
+					self::$_setting[$match[1]] = $match[2];
+
+				if (preg_match("/^-{1}\w+/", $value))
+					self::$_option[] = $value;
+
+				if (preg_match("/^\w+/", $value))
+					self::$_command[] = $value;
+			}
+
 			self::$_prefix = NANOCLI_PREFIX;
 		}
 	}
@@ -31,8 +53,8 @@ abstract class NanoCLI {
 	 * Initialize
 	 */
 	final public function init() {
-		if(count(self::$_argv) > 0) {
-			$command = array_shift(self::$_argv);
+		if(count(self::$_command) > 0) {
+			$command = array_shift(self::$_command);
 			self::$_prefix .= '_' . $command;
 			$class = self::$_prefix;
 			try {
