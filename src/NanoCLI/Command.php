@@ -2,13 +2,18 @@
 /**
  * NanoCLI
  * 
- * @package		NanoCLI
+ * @package		Command
  * @author		ScarWu
  * @copyright	Copyright (c) 2012-2013, ScarWu (http://scar.simcz.tw/)
  * @link		http://github.com/scarwu/NanoCLI
  */
 
-abstract class NanoCLI {
+namespace NanoCLI;
+
+use NanoCLI\IO;
+use Exception;
+
+abstract class Command {
 	
 	/**
 	 * @var array
@@ -45,7 +50,7 @@ abstract class NanoCLI {
 					self::$_commands[] = $value;
 			}
 
-			self::$_prefix = NANOCLI_PREFIX;
+			self::$_prefix = get_class($this);
 		}
 	}
 	
@@ -55,14 +60,14 @@ abstract class NanoCLI {
 	final public function init() {
 		if(count(self::$_commands) > 0) {
 			$command = array_shift(self::$_commands);
-			self::$_prefix .= '_' . $command;
+			self::$_prefix .= '\\' . ucfirst($command);
 
 			try {
 				$class = new self::$_prefix;
 				$class->init();
 			}
 			catch(Exception $e) {
-				NanoIO::writeln("Command $command is not found.", 'red');
+				IO::writeln("Command $command is not found.", 'red');
 			}
 		}
 		else

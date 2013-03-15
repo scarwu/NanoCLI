@@ -8,15 +8,18 @@
  * @link		http://github.com/scarwu/NanoCLI
  */
 
-class example extends NanoCLI {
+use NanoCLI\Command;
+use NanoCLI\IO;
+
+class Test extends Command {
 	public function __construct() {
 		parent::__construct();
 	}
 	
 	public function run() {
-		NanoIO::writeln('Call Default Command: Help', 'red');
+		IO::writeln('Call Default Command: Help', 'red');
 
-		$help = new example_help();
+		$help = new Test\Help();
 		$help->run();
 	}
 }

@@ -8,17 +8,22 @@
  * @link		http://github.com/scarwu/NanoCLI
  */
 
-class example_color extends NanoCLI {
+namespace Test;
+
+use NanoCLI\Command;
+use NanoCLI\IO;
+
+class Color extends Command {
 	public function __construct() {
 		parent::__construct();
 	}
 	
 	public function run() {
-		NanoIO::writeln("This is Command: color\n");
+		IO::writeln("This is Command: color\n");
 
-		NanoIO::writeln('This is red', 'red');
-		NanoIO::writeln('This is green', 'green');
-		NanoIO::writeln('This is yellow', 'yellow');
-		NanoIO::writeln('This is blue', 'blue');
+		IO::writeln('This is red', 'red');
+		IO::writeln('This is green', 'green');
+		IO::writeln('This is yellow', 'yellow');
+		IO::writeln('This is blue', 'blue');
 	}
 }

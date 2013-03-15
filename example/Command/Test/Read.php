@@ -8,17 +8,22 @@
  * @link		http://github.com/scarwu/NanoCLI
  */
 
-class example_read extends NanoCLI {
+namespace Test;
+
+use NanoCLI\Command;
+use NanoCLI\IO;
+
+class Read extends Command {
 	public function __construct() {
 		parent::__construct();
 	}
 	
 	public function run() {
-		NanoIO::writeln("This is Command: read\n");
+		IO::writeln("This is Command: read\n");
 
-		NanoIO::write("Enter Your Name: ");
-		$name = NanoIO::read();
+		IO::write("Enter Your Name: ");
+		$name = IO::read();
 		
-		NanoIO::writeln("Hi, $name !", 'yellow');
+		IO::writeln("Hi, $name !", 'yellow');
 	}
 }
