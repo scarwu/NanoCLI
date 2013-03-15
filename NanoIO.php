@@ -14,13 +14,41 @@ class NanoIO {
 	/**
 	 * @var array
 	 */
-	static private $_color = array(
+	private static $_color = array(
 		'red' => '0;31',
 		'green' => '0;32',
 		'blue' => '0;34',
-		'yellow' => '1;33',
+		'yellow' => '1;33'
 	);
 	
+	/**
+	 * @var integer
+	 */
+	private static $_width = NULL;
+
+	/**
+	 * @var integer
+	 */
+	private static $_height = NULL;
+
+	/**
+	 * Get Terminal's Width
+	 *
+	 * @return integer
+	 */
+	public static function width() {
+		return self::$_width == NULL ? self::$_width = exec('tput cols') : self::$_width;
+	}
+
+	/**
+	 * Get Terminal's Height
+	 *
+	 * @return integer
+	 */
+	public static function height() {
+		return self::$_height == NULL ? self::$_height = exec('tput cols') : self::$_height;
+	}
+
 	/**
 	 * Write data to STDOUT
 	 * 
@@ -46,6 +74,8 @@ class NanoIO {
 	
 	/**
 	 * Read STDIN
+	 *
+	 * @return string
 	 */
 	public static function read() {
 		return trim(fgets(STDIN));

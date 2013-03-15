@@ -13,22 +13,22 @@ abstract class NanoCLI {
 	/**
 	 * @var array
 	 */
-	static protected $_commands = array();
+	protected static $_commands = array();
 
 	/**
 	 * @var array
 	 */
-	static protected $_options = array();
+	protected static $_options = array();
 
 	/**
 	 * @var array
 	 */
-	static protected $_settings = array();
+	protected static $_settings = array();
 	
 	/**
 	 * @var string
 	 */
-	static protected $_prefix = NULL;
+	protected static $_prefix = NULL;
 	
 	public function __construct() {
 		if(NULL == self::$_prefix) {
@@ -56,9 +56,9 @@ abstract class NanoCLI {
 		if(count(self::$_commands) > 0) {
 			$command = array_shift(self::$_commands);
 			self::$_prefix .= '_' . $command;
-			$class = self::$_prefix;
+
 			try {
-				$class = new $class();
+				$class = new self::$_prefix;
 				$class->init();
 			}
 			catch(Exception $e) {
