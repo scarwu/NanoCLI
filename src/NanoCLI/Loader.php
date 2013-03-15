@@ -27,7 +27,7 @@ class Loader {
 	 */
 	public static function load($class_name) {
 		$class_name = str_replace('\\', '/', trim($class_name, '\\'));
-		$namespace = array_shift(explode('/', $class_name));
+		list($namespace) = explode('/', $class_name);
 
 		if(!isset(self::$_list[$namespace]))
 			throw new Exception("Namespace is not found.");
