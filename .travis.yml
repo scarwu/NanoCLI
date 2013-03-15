@@ -1,4 +1,6 @@
-script: php ./example/Boot.php
+script:
+  - php ./example/Boot.php
+  - php ./example/Boot.php color
 language: php
 php:
   - 5.3
