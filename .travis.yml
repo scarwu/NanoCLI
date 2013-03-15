@@ -1,4 +1,4 @@
-script: php ./example/boot.php
+script: php ./example/Boot.php
 language: php
 php:
   - 5.3
