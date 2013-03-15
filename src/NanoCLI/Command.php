@@ -67,7 +67,7 @@ abstract class Command {
 				$class->init();
 			}
 			catch(Exception $e) {
-				IO::writeln("Command $command is not found.", 'red');
+				IO::writeln($e->getMessage(), 'red');
 			}
 		}
 		else

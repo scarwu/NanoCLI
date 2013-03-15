@@ -30,12 +30,12 @@ class Loader {
 		list($namespace) = explode('/', $class_name);
 
 		if(!isset(self::$_list[$namespace]))
-			throw new Exception("Namespace is not found.");
+			throw new Exception("Namespace: $namespace is not found.");
 		
 		if(file_exists(self::$_list[$namespace] . "/$class_name.php"))
 			require self::$_list[$namespace] . "/$class_name.php";
 		else
-			throw new Exception("Class is not found.");
+			throw new Exception("Class: $class_name is not found.");
 	}
 	
 	/**
