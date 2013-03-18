@@ -18,30 +18,30 @@ abstract class Command {
 	/**
 	 * @var array
 	 */
-	protected static $_commands = array();
+	private static $_commands = array();
 
 	/**
 	 * @var array
 	 */
-	protected static $_options = array();
+	private static $_options = array();
 
 	/**
 	 * @var array
 	 */
-	protected static $_settings = array();
+	private static $_configs = array();
 	
 	/**
 	 * @var string
 	 */
-	protected static $_prefix = NULL;
+	private static $_prefix = NULL;
 	
 	public function __construct() {
 		if(NULL == self::$_prefix) {
 			$argv = array_slice($_SERVER['argv'], 1);
 
 			while ($value = array_shift($argv)) {
-				if (preg_match("/^(-{2}\w+)=(.+)/", $value, $match))
-					self::$_settings[$match[1]] = $match[2];
+				if (preg_match("/^(-{2}\w+)(?:=(.+))?/", $value, $match))
+					self::$_configs[$match[1]] = isset($match[2]) ? $match[2] : TRUE;
 
 				if (preg_match("/^-{1}\w+/", $value))
 					self::$_options[] = $value;
@@ -74,6 +74,24 @@ abstract class Command {
 			$this->run();
 	}
 	
+	/**
+	 * Get Configs
+	 *
+	 * @return array
+	 */
+	protected function getConfigs() {
+		return self::$_configs;
+	}
+
+	/**
+	 * Get Options
+	 *
+	 * @return array
+	 */
+	protected function getOptions() {
+		return self::$_options;
+	}
+
 	/**
 	 * Execute default function
 	 */
