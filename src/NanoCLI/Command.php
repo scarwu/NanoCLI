@@ -93,6 +93,24 @@ abstract class Command {
 	}
 
 	/**
+	 * Has Configs
+	 *
+	 * @return boolean
+	 */
+	protected function hasConfigs() {
+		return count(self::$_configs) > 0;
+	}
+
+	/**
+	 * Has Options
+	 *
+	 * @return boolean
+	 */
+	protected function hasOptions() {
+		return count(self::$_options) > 0;
+	}
+
+	/**
 	 * Execute default function
 	 */
 	public function run() {}
