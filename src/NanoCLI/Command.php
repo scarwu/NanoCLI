@@ -40,11 +40,11 @@ abstract class Command {
 			$argv = array_slice($_SERVER['argv'], 1);
 
 			while ($value = array_shift($argv)) {
-				if (preg_match("/^(-{2}\w+)(?:=(.+))?/", $value, $match))
+				if (preg_match("/^-{2}(\w+)(?:=(.+))?/", $value, $match))
 					self::$_configs[$match[1]] = isset($match[2]) ? $match[2] : TRUE;
 
-				if (preg_match("/^-{1}\w+/", $value))
-					self::$_options[] = $value;
+				if (preg_match("/^-{1}(\w+)/", $value, $match))
+					self::$_options[] = $match[1];
 
 				if (preg_match("/^\w+/", $value))
 					self::$_commands[] = $value;
@@ -77,9 +77,12 @@ abstract class Command {
 	/**
 	 * Get Configs
 	 *
-	 * @return array
+	 * @return mixed
 	 */
-	protected function getConfigs() {
+	protected function getConfigs($config = NULL) {
+		if(NULL != $config)
+			return isset(self::$_configs[$config]) ? self::$_configs[$config] : NULL;
+
 		return self::$_configs;
 	}
 
@@ -97,7 +100,10 @@ abstract class Command {
 	 *
 	 * @return boolean
 	 */
-	protected function hasConfigs() {
+	protected function hasConfigs($config = NULL) {
+		if(NULL != $config)
+			return isset(self::$_configs[$config]);
+
 		return count(self::$_configs) > 0;
 	}
 
@@ -106,7 +112,10 @@ abstract class Command {
 	 *
 	 * @return boolean
 	 */
-	protected function hasOptions() {
+	protected function hasOptions($option = NULL) {
+		if(NULL != $option)
+			return in_array($option, self::$_options);
+
 		return count(self::$_options) > 0;
 	}
 
