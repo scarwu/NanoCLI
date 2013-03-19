@@ -41,7 +41,7 @@ abstract class Command {
 
 			while ($value = array_shift($argv)) {
 				if (preg_match("/^-{2}(\w+)(?:=(.+))?/", $value, $match))
-					self::$_configs[$match[1]] = isset($match[2]) ? $match[2] : TRUE;
+					self::$_configs[$match[1]] = isset($match[2]) ? $match[2] : '';
 
 				if (preg_match("/^-{1}(\w+)/", $value, $match))
 					self::$_options[] = $match[1];
