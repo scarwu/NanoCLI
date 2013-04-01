@@ -89,11 +89,16 @@ class IO {
 	 * @param string
 	 * @return string
 	 */
-	public static function question($msg) {
+	public static function question($msg, $color = NULL, $bool = NULL) {
+		if(NULL == $bool)
+			$bool = function($answer) {
+				return '' == $answer;
+			};
+
 		do {
-			self::write($msg);
+			self::write($msg, $color);
 		}
-		while('' == $answer = self::read());
+		while($bool($answer = self::read()));
 
 		return $answer;
 	}
