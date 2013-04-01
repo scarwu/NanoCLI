@@ -82,4 +82,19 @@ class IO {
 	public static function read() {
 		return trim(fgets(STDIN));
 	}
+
+	/**
+	 * Question
+	 *
+	 * @param string
+	 * @return string
+	 */
+	public static function question($msg) {
+		do {
+			self::write($msg);
+		}
+		while('' == $answer = self::read());
+
+		return $answer;
+	}
 }
