@@ -92,7 +92,10 @@ abstract class Command {
 	 *
 	 * @return array
 	 */
-	protected function getArguments() {
+	protected function getArguments($index = NULL) {
+		if(NULL != $index)
+			return isset(self::$_arguments[$index]) ? self::$_arguments[$index] : NULL;
+		
 		return self::$_arguments;
 	}
 
