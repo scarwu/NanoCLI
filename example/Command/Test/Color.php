@@ -1,6 +1,6 @@
 <?php
 /**
- * Command example_color
+ * Command Color
  * 
  * @package		NanoCLI
  * @author		ScarWu

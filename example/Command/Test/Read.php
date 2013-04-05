@@ -1,6 +1,6 @@
 <?php
 /**
- * Command example_read
+ * Command Read
  * 
  * @package		NanoCLI
  * @author		ScarWu

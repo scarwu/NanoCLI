@@ -14,11 +14,11 @@ use NanoCLI\IO;
 use Exception;
 
 abstract class Command {
-	
+
 	/**
 	 * @var array
 	 */
-	private static $_commands = array();
+	private static $_arguments = array();
 
 	/**
 	 * @var array
@@ -39,15 +39,22 @@ abstract class Command {
 		if(NULL == self::$_prefix) {
 			$argv = array_slice($_SERVER['argv'], 1);
 
-			while ($value = array_shift($argv)) {
-				if (preg_match("/^-{2}(\w+)(?:=(.+))?/", $value, $match))
+			// arguments
+			while($argv) {
+				if(!preg_match("/^\w+/", $argv[0]))
+					break;
+
+				self::$_arguments[] = array_shift($argv);
+			}
+
+			// options & configs
+			while($value = array_shift($argv)) {
+				if(preg_match("/^-{2}(\w+(?:-\w+)?)(?:=(.+))?/", $value, $match))
 					self::$_configs[$match[1]] = isset($match[2]) ? $match[2] : '';
 
-				if (preg_match("/^-{1}(\w+)/", $value, $match))
-					self::$_options[] = $match[1];
-
-				if (preg_match("/^\w+/", $value))
-					self::$_commands[] = $value;
+				if(preg_match("/^-{1}(\w+)/", $value, $match))
+					self::$_options[$match[1]] = isset($argv[0]) && preg_match("/^\w+/", $argv[0])
+						? array_shift($argv) : '';
 			}
 
 			self::$_prefix = get_class($this);
@@ -58,22 +65,49 @@ abstract class Command {
 	 * Initialize
 	 */
 	final public function init() {
-		if(count(self::$_commands) > 0) {
-			$command = array_shift(self::$_commands);
-			self::$_prefix .= '\\' . ucfirst($command);
+		if(count(self::$_arguments) > 0) {
+			while(self::$_arguments) {
+				$class_name = self::$_prefix . '\\' . ucfirst(self::$_arguments[0]);
 
-			try {
-				$class = new self::$_prefix;
-				$class->init();
+				try {
+					if(class_exists($class_name)) {
+						self::$_prefix = $class_name;
+						array_shift(self::$_arguments);
+					}
+				}
+				catch(Exception $e) {
+					break;
+				}
 			}
-			catch(Exception $e) {
-				IO::writeln("Command $command is not found.", 'red');
-			}
+
+			$class = new self::$_prefix;
+			$class->run();
 		}
 		else
 			$this->run();
 	}
-	
+
+	/**
+	 * Get Options
+	 *
+	 * @return array
+	 */
+	protected function getArguments() {
+		return self::$_arguments;
+	}
+
+	/**
+	 * Get Options
+	 *
+	 * @return array
+	 */
+	protected function getOptions($option = NULL) {
+		if(NULL != $option)
+			return isset(self::$_options[$option]) ? self::$_options[$option] : NULL;
+
+		return self::$_options;
+	}
+
 	/**
 	 * Get Configs
 	 *
@@ -87,12 +121,24 @@ abstract class Command {
 	}
 
 	/**
-	 * Get Options
+	 * Has Arguments
 	 *
-	 * @return array
+	 * @return boolean
 	 */
-	protected function getOptions() {
-		return self::$_options;
+	protected function hasArguments() {
+		return count(self::$_arguments) > 0;
+	}
+
+	/**
+	 * Has Options
+	 *
+	 * @return boolean
+	 */
+	protected function hasOptions($option = NULL) {
+		if(NULL != $option)
+			return isset(self::$_options[$option]);
+
+		return count(self::$_options) > 0;
 	}
 
 	/**
@@ -105,18 +151,6 @@ abstract class Command {
 			return isset(self::$_configs[$config]);
 
 		return count(self::$_configs) > 0;
-	}
-
-	/**
-	 * Has Options
-	 *
-	 * @return boolean
-	 */
-	protected function hasOptions($option = NULL) {
-		if(NULL != $option)
-			return in_array($option, self::$_options);
-
-		return count(self::$_options) > 0;
 	}
 
 	/**
