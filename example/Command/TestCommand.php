@@ -11,7 +11,7 @@
 use NanoCLI\Command;
 use NanoCLI\IO;
 
-class Test extends Command {
+class TestCommand extends Command {
 	public function __construct() {
 		parent::__construct();
 	}
@@ -19,7 +19,7 @@ class Test extends Command {
 	public function run() {
 		IO::writeln('Call Default Command: Help', 'red');
 
-		$help = new Test\Help();
+		$help = new TestCommand\HelpCommand();
 		$help->run();
 	}
 }

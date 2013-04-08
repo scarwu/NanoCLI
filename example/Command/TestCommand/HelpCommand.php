@@ -8,12 +8,12 @@
  * @link		http://github.com/scarwu/NanoCLI
  */
 
-namespace Test;
+namespace TestCommand;
 
 use NanoCLI\Command;
 use NanoCLI\IO;
 
-class Help extends Command {
+class HelpCommand extends Command {
 	public function __construct() {
 		parent::__construct();
 	}

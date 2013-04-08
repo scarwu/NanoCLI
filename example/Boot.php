@@ -13,9 +13,9 @@ require realpath(__DIR__ . '/../src/NanoCLI/Loader.php');
 
 // Register NanoCLI Autoloader
 NanoCLI\Loader::register('NanoCLI', realpath(__DIR__ . '/../src'));
-NanoCLI\Loader::register('Test', realpath(__DIR__ . '/Command'));
+NanoCLI\Loader::register('TestCommand', realpath(__DIR__ . '/Command'));
 
 spl_autoload_register('NanoCLI\Loader::load');
 
-$test = new Test();
+$test = new TestCommand();
 $test->Init();

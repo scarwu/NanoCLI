@@ -67,7 +67,7 @@ abstract class Command {
 	final public function init() {
 		if(count(self::$_arguments) > 0) {
 			while(self::$_arguments) {
-				$class_name = self::$_prefix . '\\' . ucfirst(self::$_arguments[0]);
+				$class_name = self::$_prefix . '\\' . ucfirst(self::$_arguments[0]) . 'Command';
 
 				try {
 					if(class_exists($class_name)) {
