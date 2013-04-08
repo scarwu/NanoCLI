@@ -8,7 +8,7 @@
  * @link		http://github.com/scarwu/NanoCLI
  */
 
-namespace TestCommand;
+namespace Test;
 
 use NanoCLI\Command;
 use NanoCLI\IO;

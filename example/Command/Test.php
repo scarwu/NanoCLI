@@ -1,6 +1,6 @@
 <?php
 /**
- * Command Color
+ * Command example
  * 
  * @package		NanoCLI
  * @author		ScarWu
@@ -8,22 +8,18 @@
  * @link		http://github.com/scarwu/NanoCLI
  */
 
-namespace TestCommand;
-
 use NanoCLI\Command;
 use NanoCLI\IO;
 
-class ColorCommand extends Command {
+class Test extends Command {
 	public function __construct() {
 		parent::__construct();
 	}
 	
 	public function run() {
-		IO::writeln("This is Command: color\n");
+		IO::writeln('Call Default Command: Help', 'red');
 
-		IO::writeln('This is red', 'red');
-		IO::writeln('This is green', 'green');
-		IO::writeln('This is yellow', 'yellow');
-		IO::writeln('This is blue', 'blue');
+		$help = new Test\HelpCommand();
+		$help->run();
 	}
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Command example
+ * Command Read
  * 
  * @package		NanoCLI
  * @author		ScarWu
@@ -8,18 +8,22 @@
  * @link		http://github.com/scarwu/NanoCLI
  */
 
+namespace Test;
+
 use NanoCLI\Command;
 use NanoCLI\IO;
 
-class TestCommand extends Command {
+class ReadCommand extends Command {
 	public function __construct() {
 		parent::__construct();
 	}
 	
 	public function run() {
-		IO::writeln('Call Default Command: Help', 'red');
+		IO::writeln("This is Command: read\n");
 
-		$help = new TestCommand\HelpCommand();
-		$help->run();
+		IO::write("Enter Your Name: ");
+		$name = IO::read();
+		
+		IO::writeln("Hi, $name !", 'yellow');
 	}
 }
