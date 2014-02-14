@@ -48,7 +48,7 @@ class IO {
 	 * @return integer
 	 */
 	public static function height() {
-		return self::$_height == NULL ? self::$_height = exec('tput cols') : self::$_height;
+		return self::$_height == NULL ? self::$_height = exec('tput lines') : self::$_height;
 	}
 
 	/**
