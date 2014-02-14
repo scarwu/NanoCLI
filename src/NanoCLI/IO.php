@@ -91,14 +91,12 @@ class IO {
 	 */
 	public static function question($msg, $color = NULL, $bool = NULL) {
 		if(NULL == $bool)
-			$bool = function($answer) {
-				return '' == $answer;
-			};
+			$bool = function() { return TRUE; };
 
 		do {
 			self::write($msg, $color);
 		}
-		while($bool($answer = self::read()));
+		while(!$bool($answer = self::read()));
 
 		return $answer;
 	}
