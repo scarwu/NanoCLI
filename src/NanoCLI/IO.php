@@ -39,7 +39,8 @@ class IO {
 	 * @return integer
 	 */
 	public static function width() {
-		return self::$_width == NULL ? self::$_width = exec('tput cols') : self::$_width;
+		return self::$_width == NULL
+			? self::$_width = exec('tput cols') : self::$_width;
 	}
 
 	/**
@@ -48,7 +49,8 @@ class IO {
 	 * @return integer
 	 */
 	public static function height() {
-		return self::$_height == NULL ? self::$_height = exec('tput lines') : self::$_height;
+		return self::$_height == NULL
+			? self::$_height = exec('tput lines') : self::$_height;
 	}
 
 	/**
@@ -58,7 +60,7 @@ class IO {
 	 * @param string
 	 */
 	public static function writeln($msg, $color = NULL) {
-		self::write($msg . "\n", $color);
+		self::write("$msg\n", $color);
 	}
 	
 	/**
@@ -68,8 +70,9 @@ class IO {
 	 * @param string
 	 */
 	public static function write($msg, $color = NULL) {
-		if(NULL !== $color && isset(self::$_color[$color]))
+		if(NULL !== $color && isset(self::$_color[$color])) {
 			$msg = sprintf("\033[%sm%s\033[m", self::$_color[$color], $msg);
+		}
 		
 		fwrite(STDOUT, $msg);
 	}
@@ -90,8 +93,9 @@ class IO {
 	 * @return string
 	 */
 	public static function question($msg, $color = NULL, $bool = NULL) {
-		if(NULL == $bool)
+		if(NULL == $bool) {
 			$bool = function() { return TRUE; };
+		}
 
 		do {
 			self::write($msg, $color);

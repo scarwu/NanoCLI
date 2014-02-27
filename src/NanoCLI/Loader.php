@@ -29,13 +29,16 @@ class Loader {
 		$class_name = str_replace('\\', '/', trim($class_name, '\\'));
 		list($namespace) = explode('/', $class_name);
 
-		if(!isset(self::$_list[$namespace]))
+		if(!isset(self::$_list[$namespace])) {
 			throw new Exception("Namespace: $namespace is not found.");
+		}
 		
-		if(file_exists(self::$_list[$namespace] . "/$class_name.php"))
+		if(file_exists(self::$_list[$namespace] . "/$class_name.php")) {
 			require self::$_list[$namespace] . "/$class_name.php";
-		else
+		}
+		else {
 			throw new Exception("Class: $class_name is not found.");
+		}
 	}
 	
 	/**

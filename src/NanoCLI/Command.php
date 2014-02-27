@@ -41,7 +41,7 @@ abstract class Command {
 
 			// arguments
 			while($argv) {
-				if(!preg_match("/^\w+/", $argv[0]))
+				if(!preg_match('/^\w+/', $argv[0]))
 					break;
 
 				self::$_arguments[] = array_shift($argv);
@@ -49,12 +49,14 @@ abstract class Command {
 
 			// options & configs
 			while($value = array_shift($argv)) {
-				if(preg_match("/^-{2}(\w+(?:-\w+)?)(?:=(.+))?/", $value, $match))
-					self::$_configs[$match[1]] = isset($match[2]) ? $match[2] : '';
+				if(preg_match('/^-{2}(\w+(?:-\w+)?)(?:=(.+))?/', $value, $match)) {
+					self::$_configs[$match[1]] = isset($match[2]) ? $match[2] : NULL;
+				}
 
-				if(preg_match("/^-{1}(\w+)/", $value, $match))
-					self::$_options[$match[1]] = isset($argv[0]) && preg_match("/^\w+/", $argv[0])
-						? array_shift($argv) : '';
+				if(preg_match('/^-{1}(\w+)/', $value, $match)) {
+					self::$_options[$match[1]] = isset($argv[0]) && preg_match('/.+/', $argv[0])
+						? array_shift($argv) : NULL;
+				}
 			}
 
 			self::$_prefix = get_class($this);
@@ -83,8 +85,9 @@ abstract class Command {
 			$class = new self::$_prefix;
 			$class->run();
 		}
-		else
+		else {
 			$this->run();
+		}
 	}
 
 	/**
@@ -93,8 +96,10 @@ abstract class Command {
 	 * @return array
 	 */
 	protected function getArguments($index = NULL) {
-		if(NULL !== $index)
-			return isset(self::$_arguments[$index]) ? self::$_arguments[$index] : NULL;
+		if(NULL !== $index) {
+			return isset(self::$_arguments[$index])
+				? self::$_arguments[$index] : FALSE;
+		}
 		
 		return self::$_arguments;
 	}
@@ -105,8 +110,10 @@ abstract class Command {
 	 * @return array
 	 */
 	protected function getOptions($option = NULL) {
-		if(NULL !== $option)
-			return isset(self::$_options[$option]) ? self::$_options[$option] : NULL;
+		if(NULL !== $option) {
+			return isset(self::$_options[$option])
+				? self::$_options[$option] : FALSE;
+		}
 
 		return self::$_options;
 	}
@@ -117,8 +124,10 @@ abstract class Command {
 	 * @return mixed
 	 */
 	protected function getConfigs($config = NULL) {
-		if(NULL !== $config)
-			return isset(self::$_configs[$config]) ? self::$_configs[$config] : NULL;
+		if(NULL !== $config) {
+			return isset(self::$_configs[$config])
+				? self::$_configs[$config] : FALSE;
+		}
 
 		return self::$_configs;
 	}
@@ -138,8 +147,9 @@ abstract class Command {
 	 * @return boolean
 	 */
 	protected function hasOptions($option = NULL) {
-		if(NULL !== $option)
+		if(NULL !== $option) {
 			return isset(self::$_options[$option]);
+		}
 
 		return count(self::$_options) > 0;
 	}
@@ -150,8 +160,9 @@ abstract class Command {
 	 * @return boolean
 	 */
 	protected function hasConfigs($config = NULL) {
-		if(NULL !== $config)
+		if(NULL !== $config) {
 			return isset(self::$_configs[$config]);
+		}
 
 		return count(self::$_configs) > 0;
 	}
