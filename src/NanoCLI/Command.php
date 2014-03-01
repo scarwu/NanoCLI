@@ -37,7 +37,7 @@ abstract class Command
 
     public function __construct()
     {
-        if (null == self::$_prefix) {
+        if (null === self::$_prefix) {
             $config_regex_rule = '/^-{2}(\w+(?:-\w+)?)(?:=(.+))?/';
             $option_regex_rule = '/^-{1}(\w+)/';
 
@@ -45,11 +45,13 @@ abstract class Command
 
             // arguments
             while ($argv) {
-                if (preg_match($config_regex_rule, $argv[0]))
+                if (preg_match($config_regex_rule, $argv[0])) {
                     break;
+                }
 
-                if (preg_match($option_regex_rule, $argv[0]))
+                if (preg_match($option_regex_rule, $argv[0])) {
                     break;
+                }
 
                 self::$_arguments[] = array_shift($argv);
             }
@@ -57,8 +59,7 @@ abstract class Command
             // options & configs
             while ($value = array_shift($argv)) {
                 if (preg_match($config_regex_rule, $value, $match)) {
-                    self::$_configs[$match[1]] = isset($match[2])
-                        ? $match[2] : null;
+                    self::$_configs[$match[1]] = isset($match[2]) ? $match[2] : null;
                 }
 
                 if (preg_match($option_regex_rule, $value, $match)) {
@@ -89,10 +90,12 @@ abstract class Command
     {
         if (count(self::$_arguments) > 0) {
             while (self::$_arguments) {
-                if (!preg_match('/^\w+/', self::$_arguments[0]))
+                if (!preg_match('/^\w+/', self::$_arguments[0])) {
                     break;
+                }
 
-                $class_name = self::$_prefix . '\\' . ucfirst(self::$_arguments[0]) . 'Command';
+                $class_name = ucfirst(self::$_arguments[0]);
+                $class_name = self::$_prefix . "\\{$class_name}Command";
 
                 try {
                     if (class_exists($class_name)) {
@@ -119,8 +122,11 @@ abstract class Command
     protected function getArguments($index = null)
     {
         if (null !== $index) {
-            return array_key_exists($index, self::$_arguments)
-                ? self::$_arguments[$index] : false;
+            if (array_key_exists($index, self::$_arguments)) {
+                return self::$_arguments[$index];
+            } else {
+                return false;
+            }
         }
 
         return self::$_arguments;
@@ -134,8 +140,11 @@ abstract class Command
     protected function getOptions($option = null)
     {
         if (null !== $option) {
-            return array_key_exists($option, self::$_options)
-                ? self::$_options[$option] : false;
+            if (array_key_exists($option, self::$_options)) {
+                return self::$_options[$option];
+            } else {
+                return false;
+            }
         }
 
         return self::$_options;
@@ -149,8 +158,11 @@ abstract class Command
     protected function getConfigs($config = null)
     {
         if (null !== $config) {
-            return array_key_exists($config, self::$_configs)
-                ? self::$_configs[$config] : false;
+            if (array_key_exists($config, self::$_configs)) {
+                return self::$_configs[$config];
+            } else {
+                return false;
+            }
         }
 
         return self::$_configs;

@@ -41,8 +41,11 @@ class IO
      */
     public static function width()
     {
-        return self::$_width == null
-            ? self::$_width = exec('tput cols') : self::$_width;
+        if (null === self::$_width) {
+            self::$_width = exec('tput cols');
+        }
+
+        return self::$_width;
     }
 
     /**
@@ -52,8 +55,11 @@ class IO
      */
     public static function height()
     {
-        return self::$_height == null
-            ? self::$_height = exec('tput lines') : self::$_height;
+        if (null === self::$_height) {
+            self::$_height = exec('tput lines');
+        }
+
+        return self::$_height;
     }
 
     /**
@@ -100,7 +106,7 @@ class IO
      */
     public static function question($msg, $color = null, $bool = null)
     {
-        if (null == $bool) {
+        if (null === $bool) {
             $bool = function () { return true; };
         }
 
