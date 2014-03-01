@@ -41,7 +41,10 @@ abstract class Command {
 
 			// arguments
 			while($argv) {
-				if(!preg_match('/^\w+/', $argv[0]))
+				if(preg_match('/^-{2}(\w+(?:-\w+)?)(?:=(.+))?/', $argv[0]))
+					break;
+
+				if(preg_match('/^-{1}(\w+)/', $argv[0]))
 					break;
 
 				self::$_arguments[] = array_shift($argv);
@@ -69,8 +72,11 @@ abstract class Command {
 	final public function init() {
 		if(count(self::$_arguments) > 0) {
 			while(self::$_arguments) {
-				$class_name = self::$_prefix . '\\' . ucfirst(self::$_arguments[0]) . 'Command';
+				if(!preg_match('/^\w+/', self::$_arguments[0]))
+					break;
 
+				$class_name = self::$_prefix . '\\' . ucfirst(self::$_arguments[0]) . 'Command';
+				
 				try {
 					if(class_exists($class_name)) {
 						self::$_prefix = $class_name;
