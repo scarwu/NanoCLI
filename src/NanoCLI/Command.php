@@ -38,14 +38,17 @@ abstract class Command
     public function __construct()
     {
         if (null == self::$_prefix) {
+            $config_regex_rule = '/^-{2}(\w+(?:-\w+)?)(?:=(.+))?/';
+            $option_regex_rule = '/^-{1}(\w+)/';
+
             $argv = array_slice($_SERVER['argv'], 1);
 
             // arguments
             while ($argv) {
-                if(preg_match('/^-{2}(\w+(?:-\w+)?)(?:=(.+))?/', $argv[0]))
+                if (preg_match($config_regex_rule, $argv[0]))
                     break;
 
-                if(preg_match('/^-{1}(\w+)/', $argv[0]))
+                if (preg_match($option_regex_rule, $argv[0]))
                     break;
 
                 self::$_arguments[] = array_shift($argv);
@@ -53,13 +56,25 @@ abstract class Command
 
             // options & configs
             while ($value = array_shift($argv)) {
-                if (preg_match('/^-{2}(\w+(?:-\w+)?)(?:=(.+))?/', $value, $match)) {
-                    self::$_configs[$match[1]] = isset($match[2]) ? $match[2] : null;
+                if (preg_match($config_regex_rule, $value, $match)) {
+                    self::$_configs[$match[1]] = isset($match[2])
+                        ? $match[2] : null;
                 }
 
-                if (preg_match('/^-{1}(\w+)/', $value, $match)) {
-                    self::$_options[$match[1]] = isset($argv[0]) && preg_match('/.+/', $argv[0])
-                        ? array_shift($argv) : null;
+                if (preg_match($option_regex_rule, $value, $match)) {
+                    self::$_options[$match[1]] = null;
+
+                    if (isset($argv[0])) {
+                        if (preg_match($config_regex_rule, $argv[0])) {
+                            continue;
+                        }
+
+                        if (preg_match($option_regex_rule, $argv[0])) {
+                            continue;
+                        }
+
+                        self::$_options[$match[1]] = array_shift($argv);
+                    }
                 }
             }
 
@@ -74,7 +89,7 @@ abstract class Command
     {
         if (count(self::$_arguments) > 0) {
             while (self::$_arguments) {
-                if(!preg_match('/^\w+/', self::$_arguments[0]))
+                if (!preg_match('/^\w+/', self::$_arguments[0]))
                     break;
 
                 $class_name = self::$_prefix . '\\' . ucfirst(self::$_arguments[0]) . 'Command';
