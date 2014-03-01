@@ -4,7 +4,7 @@
  * 
  * @package		NanoCLI
  * @author		ScarWu
- * @copyright	Copyright (c) 2012-2013, ScarWu (http://scar.simcz.tw/)
+ * @copyright	Copyright (c) 2012-2014, ScarWu (http://scar.simcz.tw/)
  * @link		http://github.com/scarwu/NanoCLI
  */
 
@@ -16,12 +16,12 @@ class IO {
 	/**
 	 * @var array
 	 */
-	private static $_color = array(
+	private static $_color = [
 		'red' => '0;31',
 		'green' => '0;32',
 		'blue' => '0;34',
 		'yellow' => '1;33'
-	);
+	];
 	
 	/**
 	 * @var integer

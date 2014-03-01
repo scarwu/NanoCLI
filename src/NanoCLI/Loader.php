@@ -4,7 +4,7 @@
  * 
  * @package		NanoCLI
  * @author		ScarWu
- * @copyright	Copyright (c) 2012-2013, ScarWu (http://scar.simcz.tw/)
+ * @copyright	Copyright (c) 2012-2014, ScarWu (http://scar.simcz.tw/)
  * @link		http://github.com/scarwu/NanoCLI
  */
 
@@ -18,7 +18,7 @@ class Loader {
 	/**
 	 * @var array
 	 */
-	private static $_list = array();
+	private static $_list = [];
 
 	/**
 	 * Load

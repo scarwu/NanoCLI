@@ -4,7 +4,7 @@
  * 
  * @package		NanoCLI
  * @author		ScarWu
- * @copyright	Copyright (c) 2012-2013, ScarWu (http://scar.simcz.tw/)
+ * @copyright	Copyright (c) 2012-2014, ScarWu (http://scar.simcz.tw/)
  * @link		http://github.com/scarwu/NanoCLI
  */
 
@@ -18,17 +18,17 @@ abstract class Command {
 	/**
 	 * @var array
 	 */
-	private static $_arguments = array();
+	private static $_arguments = [];
 
 	/**
 	 * @var array
 	 */
-	private static $_options = array();
+	private static $_options = [];
 
 	/**
 	 * @var array
 	 */
-	private static $_configs = array();
+	private static $_configs = [];
 	
 	/**
 	 * @var string
@@ -103,7 +103,7 @@ abstract class Command {
 	 */
 	protected function getArguments($index = NULL) {
 		if(NULL !== $index) {
-			return isset(self::$_arguments[$index])
+			return array_key_exists($index, self::$_arguments)
 				? self::$_arguments[$index] : FALSE;
 		}
 		
@@ -117,7 +117,7 @@ abstract class Command {
 	 */
 	protected function getOptions($option = NULL) {
 		if(NULL !== $option) {
-			return isset(self::$_options[$option])
+			return array_key_exists($option, self::$_options)
 				? self::$_options[$option] : FALSE;
 		}
 
@@ -131,7 +131,7 @@ abstract class Command {
 	 */
 	protected function getConfigs($config = NULL) {
 		if(NULL !== $config) {
-			return isset(self::$_configs[$config])
+			return array_key_exists($config, self::$_configs)
 				? self::$_configs[$config] : FALSE;
 		}
 
@@ -154,7 +154,7 @@ abstract class Command {
 	 */
 	protected function hasOptions($option = NULL) {
 		if(NULL !== $option) {
-			return isset(self::$_options[$option]);
+			return array_key_exists($option, self::$_options);
 		}
 
 		return count(self::$_options) > 0;
@@ -167,7 +167,7 @@ abstract class Command {
 	 */
 	protected function hasConfigs($config = NULL) {
 		if(NULL !== $config) {
-			return isset(self::$_configs[$config]);
+			return array_key_exists($config, self::$_configs);
 		}
 
 		return count(self::$_configs) > 0;
