@@ -1,11 +1,11 @@
 <?php
 /**
  * Command Help
- * 
- * @package		NanoCLI
- * @author		ScarWu
- * @copyright	Copyright (c) 2012-2014, ScarWu (http://scar.simcz.tw/)
- * @link		http://github.com/scarwu/NanoCLI
+ *
+ * @package     NanoCLI
+ * @author      ScarWu
+ * @copyright   Copyright (c) 2012-2014, ScarWu (http://scar.simcz.tw/)
+ * @link        http://github.com/scarwu/NanoCLI
  */
 
 namespace Test;
@@ -13,17 +13,20 @@ namespace Test;
 use NanoCLI\Command;
 use NanoCLI\IO;
 
-class HelpCommand extends Command {
-	public function __construct() {
-		parent::__construct();
-	}
-	
-	public function run() {
-		IO::writeln("This is Command: help\n");
+class HelpCommand extends Command
+{
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
-		IO::writeln('Try above commands:', 'green');
-		IO::writeln('    ./boot.php help', 'green');
-		IO::writeln('    ./boot.php read', 'green');
-		IO::writeln('    ./boot.php color', 'green');
-	}
+    public function run()
+    {
+        IO::writeln("This is Command: help\n");
+
+        IO::writeln('Try above commands:', 'green');
+        IO::writeln('    ./boot.php help', 'green');
+        IO::writeln('    ./boot.php read', 'green');
+        IO::writeln('    ./boot.php color', 'green');
+    }
 }

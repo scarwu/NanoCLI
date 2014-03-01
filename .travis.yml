@@ -1,8 +1,8 @@
 script:
   - php ./example/Boot.php
   - php ./example/Boot.php color
-  - php ./example/Boot.php parse /path/to/dir arg1 arg2 -opt1 -opt2 opt_arg --cfg1 skip --cfg2=cfg_arg
+  - php ./example/Boot.php parse /path/to/dir arg1 arg2 /arg3/arg4 -opt1 -opt2 opt_arg --cfg1 skip --cfg2=cfg_arg
 language: php
 php:
-  - 5.3
   - 5.4
+  - 5.5
