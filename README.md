@@ -10,6 +10,6 @@ A Simply PHP CLI Development Tools
 
 * PHP 5.4+
 
-## Wiki
+## For More
 
 [Wiki](https://github.com/scarwu/NanoCLI/wiki)

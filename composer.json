@@ -1,0 +1,22 @@
+{
+    "name": "scarwu\/nanocli",
+    "homepage": "https:\/\/github.com\/scarwu\/NanoCLI",
+    "description": "A Simply PHP CLI Development Tools",
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Scar Wu",
+            "email": "xneriscool@gmail.com",
+            "homepage": "http:\/\/scar.simcz.tw"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "NanoCLI": "src"
+        }
+    },
+    "version": "0.4.1"
+}
