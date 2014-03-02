@@ -9,8 +9,8 @@ A Simply PHP CLI Development Tools
 
 ### Requirement
 
-* PHP 5.3+
+* PHP 5.4+
 
-## For More
+## Wiki
 
-Please watch [Wiki](https://github.com/scarwu/NanoCLI/wiki) or [ScarShow](http://scar.simcz.tw)
+[Wiki](https://github.com/scarwu/NanoCLI/wiki)
