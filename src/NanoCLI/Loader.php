@@ -17,39 +17,53 @@ class Loader
     private function __construct() {}
 
     /**
-     * @var array
+     * @var string
      */
-    private static $_list = [];
+    private static $_namespace = null;
+
+    /**
+     * @var string
+     */
+    private static $_path = null;
 
     /**
      * Load
      *
      * @param string
      */
-    public static function load($class_name)
+    private static function load($class_name)
     {
         $class_name = str_replace('\\', '/', trim($class_name, '\\'));
         list($namespace) = explode('/', $class_name);
 
-        if (!isset(self::$_list[$namespace])) {
+        if (self::$_namespace != $namespace) {
             throw new Exception("Namespace: $namespace is not found.");
         }
 
-        if (file_exists(self::$_list[$namespace] . "/$class_name.php")) {
-            require self::$_list[$namespace] . "/$class_name.php";
+        if (file_exists(self::$_path . "/$class_name.php")) {
+            require self::$_path . "/$class_name.php";
         } else {
             throw new Exception("Class: $class_name is not found.");
         }
     }
 
     /**
-     * Register
-     *
+     * Set Command Path
+     * 
      * @param string
      * @param string
      */
-    public static function register($namespace, $path)
+    public static function set($namespace, $path)
     {
-        self::$_list[$namespace] = $path;
+        self::$_namespace = $namespace;
+        self::$_path = $path;
+    }
+
+    /**
+     * Register
+     */
+    public static function register()
+    {
+        spl_autoload_register('self::load');
     }
 }
