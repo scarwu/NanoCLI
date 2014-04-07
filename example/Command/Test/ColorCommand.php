@@ -15,11 +15,6 @@ use NanoCLI\IO;
 
 class ColorCommand extends Command
 {
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     public function run()
     {
         IO::writeln("This is Command: color\n");

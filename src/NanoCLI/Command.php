@@ -35,59 +35,30 @@ abstract class Command
      */
     private static $_prefix = null;
 
-    public function __construct()
-    {
-        if (null === self::$_prefix) {
-            $config_regex_rule = '/^-{2}(\w+(?:-\w+)?)(?:=(.+))?/';
-            $option_regex_rule = '/^-{1}(\w+)/';
+    /**
+     * Execute before run
+     */
+    public function up() {}
 
-            $argv = array_slice($_SERVER['argv'], 1);
+    /**
+     * Execute after run
+     */
+    public function down() {}
 
-            // arguments
-            while ($argv) {
-                if (preg_match($config_regex_rule, $argv[0])) {
-                    break;
-                }
-
-                if (preg_match($option_regex_rule, $argv[0])) {
-                    break;
-                }
-
-                self::$_arguments[] = array_shift($argv);
-            }
-
-            // options & configs
-            while ($value = array_shift($argv)) {
-                if (preg_match($config_regex_rule, $value, $match)) {
-                    self::$_configs[$match[1]] = isset($match[2]) ? $match[2] : null;
-                }
-
-                if (preg_match($option_regex_rule, $value, $match)) {
-                    self::$_options[$match[1]] = null;
-
-                    if (isset($argv[0])) {
-                        if (preg_match($config_regex_rule, $argv[0])) {
-                            continue;
-                        }
-
-                        if (preg_match($option_regex_rule, $argv[0])) {
-                            continue;
-                        }
-
-                        self::$_options[$match[1]] = array_shift($argv);
-                    }
-                }
-            }
-
-            self::$_prefix = get_class($this);
-        }
-    }
+    /**
+     * Execute run
+     */
+    abstract public function run();
 
     /**
      * Initialize
      */
     final public function init()
     {
+        if (null === self::$_prefix) {
+            $this->parseCommand();
+        }
+
         if (count(self::$_arguments) > 0) {
             while (self::$_arguments) {
                 if (!preg_match('/^\w+/', self::$_arguments[0])) {
@@ -108,10 +79,62 @@ abstract class Command
             }
 
             $class = new self::$_prefix;
+            $class->up();
             $class->run();
+            $class->down();
         } else {
+            $this->up();
             $this->run();
+            $this->down();
         }
+    }
+
+    private function parseCommand($argv = null)
+    {
+        $config_regex_rule = '/^-{2}(\w+(?:-\w+)?)(?:=(.+))?/';
+        $option_regex_rule = '/^-{1}(\w+)/';
+
+        if (null === $argv) {
+            $argv = array_slice($_SERVER['argv'], 1);
+        }
+        
+        // arguments
+        while ($argv) {
+            if (preg_match($config_regex_rule, $argv[0])) {
+                break;
+            }
+
+            if (preg_match($option_regex_rule, $argv[0])) {
+                break;
+            }
+
+            self::$_arguments[] = array_shift($argv);
+        }
+
+        // options & configs
+        while ($value = array_shift($argv)) {
+            if (preg_match($config_regex_rule, $value, $match)) {
+                self::$_configs[$match[1]] = isset($match[2]) ? $match[2] : null;
+            }
+
+            if (preg_match($option_regex_rule, $value, $match)) {
+                self::$_options[$match[1]] = null;
+
+                if (isset($argv[0])) {
+                    if (preg_match($config_regex_rule, $argv[0])) {
+                        continue;
+                    }
+
+                    if (preg_match($option_regex_rule, $argv[0])) {
+                        continue;
+                    }
+
+                    self::$_options[$match[1]] = array_shift($argv);
+                }
+            }
+        }
+
+        self::$_prefix = get_class($this);
     }
 
     /**
@@ -205,9 +228,4 @@ abstract class Command
 
         return count(self::$_configs) > 0;
     }
-
-    /**
-     * Execute default function
-     */
-    public function run() {}
 }

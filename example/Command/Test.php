@@ -13,11 +13,6 @@ use NanoCLI\IO;
 
 class Test extends Command
 {
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
     public function run()
     {
         IO::writeln('Call Default Command: Help', 'red');
