@@ -64,7 +64,7 @@ abstract class Command
         if (count(self::$_arguments) > 0) {
             // Find Exists Class
             while (self::$_arguments) {
-                if (!preg_match('/^\w+/', self::$_arguments[0])) {
+                if (!preg_match('/^[a-zA-Z]+/', self::$_arguments[0])) {
                     break;
                 }
 
@@ -80,15 +80,22 @@ abstract class Command
                     break;
                 }
             }
+        }
 
+        if (count(explode("\\", self::$_prefix)) > 1) {
             $class_name = self::$_prefix . 'Command';
             $class = new $class_name;
-            $class->up();
-            $class->run();
+            
+            if (false !== $class->up()) {
+                $class->run();
+            }
+
             $class->down();
         } else {
-            $this->up();
-            $this->run();
+            if (false !== $this->up()) {
+                $this->run();
+            }
+
             $this->down();
         }
     }
