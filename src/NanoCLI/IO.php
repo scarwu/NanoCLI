@@ -177,7 +177,7 @@ class IO
      * @param string
      * @return string
      */
-    public static function ask($msg, $color = null, $bool = null)
+    public static function ask($msg, $bool = null, $text_color = null, $bg_color = null)
     {
         if (null === $bool) {
             $bool = function() {
@@ -186,7 +186,7 @@ class IO
         }
 
         do {
-            self::write($msg, $color);
+            self::write($msg, $text_color, $bg_color);
         } while (!$bool($answer = self::read()));
 
         return $answer;
