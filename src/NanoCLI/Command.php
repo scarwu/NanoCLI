@@ -52,23 +52,27 @@ abstract class Command
     /**
      * Initialize
      */
-    final public function init()
+    final public function init($argv = null)
     {
-        if (null === self::$_prefix) {
-            $this->parseCommand();
+        if (null !== self::$_prefix) {
+            return false;
         }
 
+        // Parse Input Command
+        $this->parseCommand($argv);
+
         if (count(self::$_arguments) > 0) {
+            // Find Exists Class
             while (self::$_arguments) {
                 if (!preg_match('/^\w+/', self::$_arguments[0])) {
                     break;
                 }
 
                 $class_name = ucfirst(self::$_arguments[0]);
-                $class_name = self::$_prefix . "\\{$class_name}Command";
+                $class_name = self::$_prefix . "\\$class_name";
 
                 try {
-                    if (class_exists($class_name)) {
+                    if (class_exists("{$class_name}Command")) {
                         self::$_prefix = $class_name;
                         array_shift(self::$_arguments);
                     }
@@ -77,7 +81,8 @@ abstract class Command
                 }
             }
 
-            $class = new self::$_prefix;
+            $class_name = self::$_prefix . 'Command';
+            $class = new $class_name;
             $class->up();
             $class->run();
             $class->down();
