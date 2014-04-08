@@ -17,20 +17,18 @@ class ParseCommand extends Command
 {
     public function run()
     {
-        IO::writeln("This is Command: Parse\n");
-
         if ($this->hasArguments()) {
-            IO::writeln('Arguments:', 'green');
+            IO::debug('Arguments:');
             var_dump($this->getArguments());
         }
 
         if ($this->hasOptions()) {
-            IO::writeln('Options:', 'green');
+            IO::debug('Options:');
             var_dump($this->getOptions());
         }
 
         if ($this->hasConfigs()) {
-            IO::writeln('Configs:', 'green');
+            IO::debug('Configs:');
             var_dump($this->getConfigs());
         }
     }

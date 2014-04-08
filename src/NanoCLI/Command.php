@@ -14,7 +14,6 @@ use Exception;
 
 abstract class Command
 {
-
     /**
      * @var array
      */
@@ -142,7 +141,7 @@ abstract class Command
      *
      * @return array
      */
-    protected function getArguments($index = null)
+    final protected function getArguments($index = null)
     {
         if (null !== $index) {
             if (array_key_exists($index, self::$_arguments)) {
@@ -160,7 +159,7 @@ abstract class Command
      *
      * @return array
      */
-    protected function getOptions($option = null)
+    final protected function getOptions($option = null)
     {
         if (null !== $option) {
             if (array_key_exists($option, self::$_options)) {
@@ -178,7 +177,7 @@ abstract class Command
      *
      * @return mixed
      */
-    protected function getConfigs($config = null)
+    final protected function getConfigs($config = null)
     {
         if (null !== $config) {
             if (array_key_exists($config, self::$_configs)) {
@@ -196,7 +195,7 @@ abstract class Command
      *
      * @return boolean
      */
-    protected function hasArguments()
+    final protected function hasArguments()
     {
         return count(self::$_arguments) > 0;
     }
@@ -206,7 +205,7 @@ abstract class Command
      *
      * @return boolean
      */
-    protected function hasOptions($option = null)
+    final protected function hasOptions($option = null)
     {
         if (null !== $option) {
             return array_key_exists($option, self::$_options);
@@ -220,7 +219,7 @@ abstract class Command
      *
      * @return boolean
      */
-    protected function hasConfigs($config = null)
+    final protected function hasConfigs($config = null)
     {
         if (null !== $config) {
             return array_key_exists($config, self::$_configs);

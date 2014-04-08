@@ -17,11 +17,10 @@ class HelpCommand extends Command
 {
     public function run()
     {
-        IO::writeln("This is Command: help\n");
-
-        IO::writeln('Try above commands:', 'green');
-        IO::writeln('    ./boot.php help', 'green');
-        IO::writeln('    ./boot.php read', 'green');
-        IO::writeln('    ./boot.php color', 'green');
+        IO::info('Try above commands:');
+        IO::info('    ./boot.php help');
+        IO::info('    ./boot.php read');
+        IO::info('    ./boot.php color');
+        IO::info('    ./boot.php parse');
     }
 }

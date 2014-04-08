@@ -17,49 +17,62 @@ class IO
     /**
      * @var array
      */
-    private static $_color = [
+    private static $text_color = [
+        'black' => '0;30',
         'red' => '0;31',
         'green' => '0;32',
+        'brown' => '0;33',
         'blue' => '0;34',
-        'yellow' => '1;33'
+        'purple' => '0;35',
+        'cyan' => '0;36',
+        'light_gray' => '0;37',
+
+        'dark_gray' => '1;30',
+        'light_red' => '1;31',
+        'light_green' => '1;32',
+        'yellow' => '1;33',
+        'light_blue' => '1;34',
+        'light_purple' => '1;35',
+        'light_cyan' => '1;36',
+        'white' => '1;37'
     ];
 
     /**
-     * @var integer
+     * @var array
      */
-    private static $_width = null;
+    private static $bg_color = [
+        'black' => '0;40',
+        'red' => '0;41',
+        'green' => '0;42',
+        'brown' => '0;43',
+        'blue' => '0;44',
+        'purple' => '0;45',
+        'cyan' => '0;46',
+        'light_gray' => '0;47',
 
-    /**
-     * @var integer
-     */
-    private static $_height = null;
+        'dark_gray' => '1;40',
+        'light_red' => '1;41',
+        'light_green' => '1;42',
+        'yellow' => '1;43',
+        'light_blue' => '1;44',
+        'light_purple' => '1;45',
+        'light_cyan' => '1;46',
+        'white' => '1;47'
+    ];
 
-    /**
-     * Get Terminal's Width
-     *
-     * @return integer
-     */
-    public static function width()
+    private static function color($msg, $text_color = null, $bg_color = null)
     {
-        if (null === self::$_width) {
-            self::$_width = exec('tput cols');
+        if (isset(self::$text_color[$text_color])) {
+            $color = self::$text_color[$text_color];
+            $msg = "\033[{$color}m$msg\033[m";
         }
 
-        return self::$_width;
-    }
-
-    /**
-     * Get Terminal's Height
-     *
-     * @return integer
-     */
-    public static function height()
-    {
-        if (null === self::$_height) {
-            self::$_height = exec('tput lines');
+        if (isset(self::$bg_color[$bg_color])) {
+            $color = self::$bg_color[$bg_color];
+            $msg = "\033[{$color}m$msg\033[m";
         }
 
-        return self::$_height;
+        return $msg;
     }
 
     /**
@@ -68,24 +81,84 @@ class IO
      * @param string
      * @param string
      */
-    public static function writeln($msg, $color = null)
+    public static function write($msg, $text_color = null, $bg_color = null)
     {
-        self::write("$msg\n", $color);
-    }
-
-    /**
-     * Write data to STDOUT
-     *
-     * @param string
-     * @param string
-     */
-    public static function write($msg, $color = null)
-    {
-        if (null !== $color && isset(self::$_color[$color])) {
-            $msg = sprintf("\033[%sm%s\033[m", self::$_color[$color], $msg);
+        if (null !== $text_color || null !== $bg_color) {
+            $msg = self::color($msg, $text_color, $bg_color);
         }
 
         fwrite(STDOUT, $msg);
+    }
+
+    /**
+     * Write data to STDOUT
+     *
+     * @param string
+     * @param string
+     */
+    public static function writeln($msg = '', $text_color = null, $bg_color = null)
+    {
+        self::write("$msg\n",$text_color, $bg_color);
+    }
+
+    /**
+     * Error
+     *
+     * @param string
+     */
+    public static function error($msg)
+    {
+        self::write("$msg\n", 'red');
+    }
+
+    /**
+     * Warning
+     *
+     * @param string
+     */
+    public static function warning($msg)
+    {
+        self::write("$msg\n", 'yellow');
+    }
+
+    /**
+     * Notice
+     *
+     * @param string
+     */
+    public static function notice($msg)
+    {
+        self::write("$msg\n", 'green');
+    }
+
+    /**
+     * Info
+     *
+     * @param string
+     */
+    public static function info($msg)
+    {
+        self::write("$msg\n", 'dark_gray');
+    }
+
+    /**
+     * Debug
+     *
+     * @param string
+     */
+    public static function debug($msg)
+    {
+        self::write("$msg\n", 'light_gray');
+    }
+
+    /**
+     * Log
+     *
+     * @param string
+     */
+    public static function log($msg)
+    {
+        self::write("$msg\n");
     }
 
     /**
@@ -99,15 +172,17 @@ class IO
     }
 
     /**
-     * Question
+     * Ask
      *
      * @param string
      * @return string
      */
-    public static function question($msg, $color = null, $bool = null)
+    public static function ask($msg, $color = null, $bool = null)
     {
         if (null === $bool) {
-            $bool = function () { return true; };
+            $bool = function() {
+                return true;
+            };
         }
 
         do {

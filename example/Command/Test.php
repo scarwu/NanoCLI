@@ -15,7 +15,7 @@ class Test extends Command
 {
     public function run()
     {
-        IO::writeln('Call Default Command: Help', 'red');
+        IO::warning('Call Default Command: Help');
 
         $help = new Test\HelpCommand();
         $help->run();

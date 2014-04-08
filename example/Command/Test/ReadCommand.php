@@ -17,11 +17,13 @@ class ReadCommand extends Command
 {
     public function run()
     {
-        IO::writeln("This is Command: read\n");
+        // IO::write("What is your name? ");
+        // $name = IO::read();
 
-        IO::write("Enter Your Name: ");
-        $name = IO::read();
+    	// or
 
-        IO::writeln("Hi, $name !", 'yellow');
+        $name = IO::ask("What is your name? ");
+
+        IO::log("Hi, $name!");
     }
 }
