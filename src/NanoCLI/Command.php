@@ -64,7 +64,7 @@ abstract class Command
         if (count(self::$_arguments) > 0) {
             // Find Exists Class
             while (self::$_arguments) {
-                if (!preg_match('/^[a-zA-Z]+/', self::$_arguments[0])) {
+                if (!preg_match('/^([a-zA-Z]+)$/', self::$_arguments[0])) {
                     break;
                 }
 
