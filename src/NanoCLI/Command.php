@@ -52,40 +52,21 @@ abstract class Command
     /**
      * Initialize
      */
-    final public function init($argv = null)
+    final public function init()
     {
         if (null !== self::$_prefix) {
             return false;
         }
 
         // Parse Input Command
-        $this->parseCommand($argv);
+        $this->parseCommand();
 
-        if (count(self::$_arguments) > 0) {
-            // Find Exists Class
-            while (self::$_arguments) {
-                if (!preg_match('/^([a-zA-Z]+)$/', self::$_arguments[0])) {
-                    break;
-                }
+        // Find Command
+        list($class_name, self::$_arguments) = $this->findCommand(self::$_prefix, self::$_arguments);
 
-                $class_name = ucfirst(self::$_arguments[0]);
-                $class_name = self::$_prefix . "\\$class_name";
-
-                try {
-                    if (class_exists("{$class_name}Command")) {
-                        self::$_prefix = $class_name;
-                        array_shift(self::$_arguments);
-                    }
-                } catch (Exception $e) {
-                    break;
-                }
-            }
-        }
-
-        if (count(explode("\\", self::$_prefix)) > 1) {
-            $class_name = self::$_prefix . 'Command';
+        if ($class_name) {
             $class = new $class_name;
-            
+
             if (false !== $class->up()) {
                 $class->run();
             }
@@ -100,15 +81,13 @@ abstract class Command
         }
     }
 
-    private function parseCommand($argv = null)
+    private function parseCommand()
     {
         $config_regex_rule = '/^-{2}(\w+(?:-\w+)?)(?:=(.+))?/';
         $option_regex_rule = '/^-{1}(\w+)/';
 
-        if (null === $argv) {
-            $argv = array_slice($_SERVER['argv'], 1);
-        }
-        
+        $argv = array_slice($_SERVER['argv'], 1);
+
         // arguments
         while ($argv) {
             if (preg_match($config_regex_rule, $argv[0])) {
@@ -146,6 +125,44 @@ abstract class Command
         }
 
         self::$_prefix = get_class($this);
+    }
+
+    final protected function  findCommand($prefix, $arguments)
+    {
+        $temp_arguments = $arguments;
+
+        if (count($arguments) > 0) {
+            // Find Exists Class
+            while ($arguments) {
+                if (!preg_match('/^([a-zA-Z]+)$/', $arguments[0])) {
+                    break;
+                }
+
+                $class_name = ucfirst($arguments[0]);
+                $class_name = $prefix . "\\$class_name";
+
+                try {
+                    if (class_exists("{$class_name}Command")) {
+                        $prefix = $class_name;
+                        array_shift($arguments);
+                    }
+                } catch (Exception $e) {
+                    break;
+                }
+            }
+        }
+
+        if (count(explode("\\", $prefix)) > 1) {
+            return [
+                $prefix . 'Command',
+                $arguments
+            ];
+        }
+
+        return [
+            false,
+            $temp_arguments
+        ];
     }
 
     /**
