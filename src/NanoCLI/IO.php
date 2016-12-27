@@ -4,7 +4,7 @@
  *
  * @package     NanoCLI
  * @author      ScarWu
- * @copyright   Copyright (c) 2012-2014, ScarWu (http://scar.simcz.tw/)
+ * @copyright   Copyright (c) 2012-2016, ScarWu (http://scar.simcz.tw/)
  * @link        http://github.com/scarwu/NanoCLI
  */
 
@@ -60,105 +60,107 @@ class IO
         'white' => '1;47'
     ];
 
-    private static function color($msg, $text_color = null, $bg_color = null)
+    private static function color($text, $text_color = null, $bg_color = null)
     {
         if (isset(self::$text_color[$text_color])) {
             $color = self::$text_color[$text_color];
-            $msg = "\033[{$color}m$msg\033[m";
+            $text = "\033[{$color}m{$text}\033[m";
         }
 
         if (isset(self::$bg_color[$bg_color])) {
             $color = self::$bg_color[$bg_color];
-            $msg = "\033[{$color}m$msg\033[m";
+            $text = "\033[{$color}m{$text}\033[m";
         }
 
-        return $msg;
+        return $text;
     }
 
     /**
      * Write data to STDOUT
      *
-     * @param string
-     * @param string
+     * @param string text
+     * @param string text_color
+     * @param string bg_color
      */
-    public static function write($msg, $text_color = null, $bg_color = null)
+    public static function write($text, $text_color = null, $bg_color = null)
     {
         if (null !== $text_color || null !== $bg_color) {
-            $msg = self::color($msg, $text_color, $bg_color);
+            $text = self::color($text, $text_color, $bg_color);
         }
 
-        fwrite(STDOUT, $msg);
+        fwrite(STDOUT, $text);
     }
 
     /**
      * Write data to STDOUT
      *
-     * @param string
-     * @param string
+     * @param string text
+     * @param string bg_color
+     * @param string bg_color
      */
-    public static function writeln($msg = '', $text_color = null, $bg_color = null)
+    public static function writeln($text = '', $text_color = null, $bg_color = null)
     {
-        self::write("$msg\n",$text_color, $bg_color);
+        self::write("{$text}\n", $text_color, $bg_color);
     }
 
     /**
      * Error
      *
-     * @param string
+     * @param string text
      */
-    public static function error($msg)
+    public static function error($text)
     {
-        self::write("$msg\n", 'red');
+        self::write("{$text}\n", 'red');
     }
 
     /**
      * Warning
      *
-     * @param string
+     * @param string text
      */
-    public static function warning($msg)
+    public static function warning($text)
     {
-        self::write("$msg\n", 'yellow');
+        self::write("{$text}\n", 'yellow');
     }
 
     /**
      * Notice
      *
-     * @param string
+     * @param string text
      */
-    public static function notice($msg)
+    public static function notice($text)
     {
-        self::write("$msg\n", 'green');
+        self::write("{$text}\n", 'green');
     }
 
     /**
      * Info
      *
-     * @param string
+     * @param string text
      */
-    public static function info($msg)
+    public static function info($text)
     {
-        self::write("$msg\n", 'dark_gray');
+        self::write("{$text}\n", 'dark_gray');
     }
 
     /**
      * Debug
      *
-     * @param string
+     * @param string text
      */
-    public static function debug($msg)
+    public static function debug($text)
     {
-        self::write("$msg\n", 'light_gray');
+        self::write("{$text}\n", 'light_gray');
     }
 
     /**
      * Log
      *
-     * @param string
+     * @param string text
      */
-    public static function log($msg)
+    public static function log($text)
     {
-        self::write("$msg\n");
+        self::write("{$text}\n");
     }
 
     /**
@@ -174,20 +176,24 @@ class IO
     /**
      * Ask
      *
-     * @param string
+     * @param string text
+     * @param function callback
+     * @param string text_color
+     * @param string bg_color
+     *
      * @return string
      */
-    public static function ask($msg, $bool = null, $text_color = null, $bg_color = null)
+    public static function ask($text, $callback = null, $text_color = null, $bg_color = null)
     {
-        if (null === $bool) {
-            $bool = function() {
+        if (null === $callback) {
+            $callback = function() {
                 return true;
             };
         }
 
         do {
-            self::write($msg, $text_color, $bg_color);
-        } while (!$bool($answer = self::read()));
+            self::write($text, $text_color, $bg_color);
+        } while (!$callback($answer = self::read()));
 
         return $answer;
     }

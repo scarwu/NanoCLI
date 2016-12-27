@@ -35,6 +35,11 @@ abstract class Command
     private static $_prefix = null;
 
     /**
+     * @var string
+     */
+    protected static $_namespace = null;
+
+    /**
      * Execute before run
      */
     public function up() {}
@@ -81,6 +86,9 @@ abstract class Command
         }
     }
 
+    /**
+     * Parse Command
+     */
     private function parseCommand()
     {
         $config_regex_rule = '/^-{2}(\w+(?:-\w+)?)(?:=(.+))?/';
@@ -127,9 +135,24 @@ abstract class Command
         self::$_prefix = get_class($this);
     }
 
-    final protected function  findCommand($prefix, $arguments)
+    /**
+     * Find Command
+     *
+     * @param string prefix
+     * @param array arguments
+     *
+     * @return array
+     */
+    final protected function findCommand($prefix, $arguments)
     {
         $temp_arguments = $arguments;
+
+        $pattern = '/^' . str_replace('\\', '\\\\', self::$_namespace) . '\\\\(\w+)Command$/';
+
+        preg_match($pattern, $prefix, $match);
+
+        $class_name_list = [];
+        $class_name_list[] = $match[1];
 
         if (count($arguments) > 0) {
             // Find Exists Class
@@ -138,12 +161,14 @@ abstract class Command
                     break;
                 }
 
-                $class_name = ucfirst($arguments[0]);
-                $class_name = $prefix . "\\$class_name";
+                $class_name = self::$_namespace . '\\';
+                $class_name .= implode('\\', $class_name_list) . '\\';
+                $class_name .= ucfirst($arguments[0]) . 'Command';
 
                 try {
-                    if (class_exists("{$class_name}Command")) {
-                        $prefix = $class_name;
+                    if (class_exists($class_name)) {
+                        $class_name_list[] = ucfirst($arguments[0]);
+
                         array_shift($arguments);
                     }
                 } catch (Exception $e) {
@@ -152,9 +177,9 @@ abstract class Command
             }
         }
 
-        if (count(explode("\\", $prefix)) > 1) {
+        if (count($class_name_list) > 1) {
             return [
-                $prefix . 'Command',
+                self::$_namespace . '\\' . implode('\\', $class_name_list) . 'Command',
                 $arguments
             ];
         }

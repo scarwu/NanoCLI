@@ -4,7 +4,7 @@
  *
  * @package     NanoCLI
  * @author      ScarWu
- * @copyright   Copyright (c) 2012-2014, ScarWu (http://scar.simcz.tw/)
+ * @copyright   Copyright (c) 2012-2016, ScarWu (http://scar.simcz.tw/)
  * @link        http://github.com/scarwu/NanoCLI
  */
 
@@ -17,14 +17,9 @@ class Loader
     private function __construct() {}
 
     /**
-     * @var string
+     * @var array
      */
-    private static $_namespace = null;
-
-    /**
-     * @var string
-     */
-    private static $_path = null;
+    private static $_namespace_list = [];
 
     /**
      * Load
@@ -33,30 +28,40 @@ class Loader
      */
     private static function load($class_name)
     {
-        $class_name = str_replace('\\', '/', trim($class_name, '\\'));
-        list($namespace) = explode('/', $class_name);
+        $class_name = trim($class_name, '\\');
 
-        if (self::$_namespace != $namespace) {
-            throw new Exception("Namespace: $namespace is not found.");
+        foreach (self::$_namespace_list as $namespace => $path) {
+            $pattern = '/^' . str_replace('\\', '\\\\', $namespace) . '/';
+
+            if (!preg_match($pattern, $class_name)) {
+                continue;
+            }
+
+            $class_name = str_replace($namespace, '', trim($class_name, '\\'));
+            $class_name = str_replace('\\', '/', trim($class_name, '\\'));
+
+            if (file_exists("{$path}/{$class_name}.php")) {
+                require "{$path}/{$class_name}.php";
+
+                return true;
+            }
         }
 
-        if (file_exists(self::$_path . "/$class_name.php")) {
-            require self::$_path . "/$class_name.php";
-        } else {
-            throw new Exception("Class: $class_name is not found.");
-        }
+        throw new Exception("Class: {$class_name} is not found.");
     }
 
     /**
      * Set Command Path
-     * 
+     *
      * @param string
      * @param string
      */
     public static function set($namespace, $path)
     {
-        self::$_namespace = $namespace;
-        self::$_path = $path;
+        $namespace = trim($namespace, '\\');
+        $path = rtrim($path, '/');
+
+        self::$_namespace_list[$namespace] = $path;
     }
 
     /**
