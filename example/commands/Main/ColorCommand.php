@@ -4,11 +4,11 @@
  *
  * @package     NanoCLI
  * @author      ScarWu
- * @copyright   Copyright (c) 2012-2014, ScarWu (http://scar.simcz.tw/)
+ * @copyright   Copyright (c) 2012-2017, ScarWu (http://scar.simcz.tw/)
  * @link        http://github.com/scarwu/NanoCLI
  */
 
-namespace Test;
+namespace Example\Main;
 
 use NanoCLI\Command;
 use NanoCLI\IO;
@@ -17,6 +17,7 @@ class ColorCommand extends Command
 {
     public function run()
     {
+        // Text Colors Only
         IO::write('X', 'black');
         IO::write('X', 'red');
         IO::write('X', 'green');
@@ -37,6 +38,7 @@ class ColorCommand extends Command
 
         IO::writeln();
 
+        // Background Colors Only
         IO::write('X', null, 'black');
         IO::write('X', null, 'red');
         IO::write('X', null, 'green');
@@ -57,6 +59,7 @@ class ColorCommand extends Command
 
         IO::writeln();
 
+        // Text & Background Colors
         IO::write('X', 'white', 'black');
         IO::write('X', 'light_cyan', 'red');
         IO::write('X', 'light_purple', 'green');
