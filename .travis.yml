@@ -1,8 +1,10 @@
 script:
-  - php ./example/Boot.php
-  - php ./example/Boot.php color
-  - php ./example/Boot.php parse arg1 arg2 /arg3/arg4 -opt1 -opt2 opt_arg --cfg1 skip --cfg2=cfg_arg
+  - php ./example/boot.php
+  - php ./example/boot.php color
+  - php ./example/boot.php parse arg1 arg2 /arg3/arg4 -opt1 -opt2 opt_arg --cfg1 skip --cfg2=cfg_arg
 language: php
 php:
   - 5.4
   - 5.5
+  - 5.6
+  - 7.0
