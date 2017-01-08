@@ -30,7 +30,7 @@ class Loader
     {
         $class_name = trim($class_name, '\\');
 
-        foreach (self::$_namespace_list as $namespace => $path) {
+        foreach (self::$_namespace_list as $namespace => $path_list) {
             $pattern = '/^' . str_replace('\\', '\\\\', $namespace) . '/';
 
             if (!preg_match($pattern, $class_name)) {
@@ -40,7 +40,11 @@ class Loader
             $class_name = str_replace($namespace, '', trim($class_name, '\\'));
             $class_name = str_replace('\\', '/', trim($class_name, '\\'));
 
-            if (file_exists("{$path}/{$class_name}.php")) {
+            foreach ($path_list as $path) {
+                if (!file_exists("{$path}/{$class_name}.php")) {
+                    continue;
+                }
+
                 require "{$path}/{$class_name}.php";
 
                 return true;
@@ -61,7 +65,11 @@ class Loader
         $namespace = trim($namespace, '\\');
         $path = rtrim($path, '/');
 
-        self::$_namespace_list[$namespace] = $path;
+        if (!isset(self::$_namespace_list[$namespace])) {
+            self::$_namespace_list[$namespace] = [];
+        }
+
+        self::$_namespace_list[$namespace][] = $path;
     }
 
     /**

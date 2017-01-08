@@ -145,11 +145,16 @@ abstract class Command
      */
     final protected function findCommand($prefix, $arguments)
     {
-        $temp_arguments = $arguments;
+        $error_return = [
+            false,
+            $arguments
+        ];
 
         $pattern = '/^' . str_replace('\\', '\\\\', self::$_namespace) . '\\\\(\w+)Command$/';
 
-        preg_match($pattern, $prefix, $match);
+        if (!preg_match($pattern, $prefix, $match)) {
+            return $error_return;
+        }
 
         $class_name_list = [];
         $class_name_list[] = $match[1];
@@ -184,10 +189,7 @@ abstract class Command
             ];
         }
 
-        return [
-            false,
-            $temp_arguments
-        ];
+        return $error_return;
     }
 
     /**
